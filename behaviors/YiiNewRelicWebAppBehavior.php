@@ -19,8 +19,10 @@
 class YiiNewRelicWebAppBehavior extends CBehavior
 {
 
-	public function attach($owner) {
-		$owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
+	public function events() {
+		return array(
+			'onBeginRequest' => 'handleBeginRequest',
+		);
 	}
 
 	public function handleBeginRequest($event) {

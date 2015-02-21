@@ -47,7 +47,7 @@ add a line before that class declaration that says:
 5) In main.php, add the following to the top-level array:
 ```
 	'behaviors' => array(
-		'onBeginRequest' => array(
+		'newRelic' => array(
 			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicWebAppBehavior',
 		),
 	),
@@ -82,10 +82,7 @@ add a line before that class declaration that says:
 10) In console.php, add the following to the top-level array:
 ```
 	'behaviors' => array(
-		'onBeginRequest' => array(
-			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
-		),
-		'onEndRequest' => array(
+		'newRelic' => array(
 			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
 		),
 	),

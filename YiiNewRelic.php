@@ -156,9 +156,9 @@ class YiiNewRelic extends CApplicationComponent
 	public function setTransactionName($controllerId, $actionId) {
 		$route = $controllerId . '/' . $actionId;
 		$module = Yii::app()->controller->module;
-		if ($module instanceof CModule)
+		if ($module instanceof CModule) {
 			$route = $module->getId() . '/' . $route;
-
+		}
 		$this->nameTransaction($route);
 	}
 

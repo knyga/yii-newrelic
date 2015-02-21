@@ -55,7 +55,7 @@
  *
  *   - In main.php, add the following to the top-level array:
  *         'behaviors' => array(
- *             'onBeginRequest' => array(
+ *             'newRelic' => array(
  *                  'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicWebAppBehavior',
  *             ),
  *         ),
@@ -82,10 +82,7 @@
  *
  *   - In console.php, add the following to the top-level array:
  *         'behaviors' => array(
- *             'onBeginRequest' => array(
- *                  'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
- *             ),
- *             'onEndRequest' => array(
+ *             'newRelic' => array(
  *                  'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
  *             ),
  *         ),

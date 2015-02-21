@@ -24,7 +24,7 @@ class YiiNewRelicClientScript extends CClientScript
 	 * method renderNewRelicTimingHeader() and renderNewRelicTimingFooter().
 	 */
 	public function render(&$output) {
-		if(!$this->hasScripts) {
+		if (!$this->hasScripts) {
 			if ($this->enableJavaScript) {
 				$this->renderNewRelicTimingHeader($output);
 				$this->renderNewRelicTimingFooter($output);

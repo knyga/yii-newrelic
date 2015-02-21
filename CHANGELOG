@@ -4,3 +4,9 @@ yii-newrelic
 Version 0.01a
 -------------
 - Initial Release
+
+Version 0.01b
+-------------
+- Improved method of attaching behaviors
+- Updated readme to correspond to new method of attaching behaviors
+- Improved method of checking if the request involves a module

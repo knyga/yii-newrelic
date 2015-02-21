@@ -7,7 +7,7 @@
  * @author    GTCode
  * @link      http://www.GTCode.com/
  * @package   YiiNewRelic
- * @version   0.01a
+ * @version   0.01b
  * @category  ext*
  *
  * This class is a Yii wrapper around New Relic PHP API.

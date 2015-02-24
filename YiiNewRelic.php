@@ -411,14 +411,46 @@ class YiiNewRelic extends CApplicationComponent
 	 *
 	 * Please see New Relic PHP API docs for more details.
 	 *
-	 * @param string $name Your Application Name
+	 * @param string $name Sets the name of the application to name. The string
+	 *                        uses the same format as newrelic.appname and can set
+	 *                        multiple application names by separating each with a
+	 *                        semi-colon (;). However, be aware of the restriction
+	 *                        on the application name ordering as described for
+	 *                        that setting.
+	 *                        The first application name is the primary name. You
+	 *                        can also specify up to two extra application names.
+	 *                        (However, the same application name can only ever be
+	 *                        used once as a primary name). Call this function as
+	 *                        early as possible. It will have no effect if called
+	 *                        after the JavaScript footer for page load timing
+	 *                        (sometimes referred to as real user monitoring or RUM)
+	 *                        has been sent.
+	 * @param string $license If you use multiple licenses, you can also specify
+	 *                        a license key along with the application name. An
+	 *                        application can appear in more than one account and
+	 *                        the license key controls which account you are
+	 *                        changing the name in. If you do not wish to change
+	 *                        the license and wish to use the third variant,
+	 *                        simply set the license key to the empty string ("").
+	 * @param boolean $xmit The xmit flag is new in PHP agent version 3.1. Usually,
+	 *                        when you change an application name, the agent simply
+	 *                        discards the current transaction and does not send any
+	 *                        of the accumulated metrics to the daemon. However, if
+	 *                        you want to record the metric and transaction data up
+	 *                        to the point at which you called this function, you
+	 *                        can specify a value of true for this argument to make
+	 *                        the agent send the transaction to the daemon. This has
+	 *                        a very slight performance impact as it takes a few
+	 *                        milliseconds for the agent to dump its data. By
+	 *                        default this parameter is false.
 	 * @since 2.7
+	 * @since 3.1 ($xmit)
 	 */
-	public function setAppName($name) {
+	public function setAppName($name, $license=null, $xmit=false) {
 		if ($this->skip()) {
 			return;
 		}
-		newrelic_set_appname($name);
+		newrelic_set_appname($name, $license, $xmit);
 	}
 
 	/**

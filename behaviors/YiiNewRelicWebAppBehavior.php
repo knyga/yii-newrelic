@@ -19,14 +19,14 @@
 class YiiNewRelicWebAppBehavior extends CBehavior
 {
 
-	public function events() {
-		return array(
-			'onBeginRequest' => 'handleBeginRequest',
-		);
-	}
+    public function events() {
+        return array(
+            'onBeginRequest' => 'handleBeginRequest',
+        );
+    }
 
-	public function handleBeginRequest($event) {
-		$event->sender->newRelic->setYiiAppName();
-	}
+    public function handleBeginRequest($event) {
+        $event->sender->newRelic->setYiiAppName();
+    }
 
 }

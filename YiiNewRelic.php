@@ -160,6 +160,251 @@ class YiiNewRelic extends CApplicationComponent
 	}
 
 	/**
+	 * Begin New Relic PHP Agent API wrapper methods
+	 */
+
+	/**
+	 * Adds a custom parameter to current web transaction, e.g. customer's full
+	 * name.
+	 *
+	 * @param string $key Name of custom parameter
+	 * @param string $value Value of custom parameter
+	 */
+	public function addCustomParameter($key, $value) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_add_custom_parameter($key, $value);
+	}
+
+	/**
+	 * Adds a user defined functions or methods to the list to be instrumented.
+	 *
+	 * Internal PHP functions cannot have custom tracing.
+	 *
+	 * @param string $name Either 'functionName', or 'ClassName::functionName'
+	 */
+	public function addCustomTracer($name) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_add_custom_tracer($name);
+	}
+
+	/**
+	 * Whether to mark as a background job or web application.
+	 *
+	 * @param boolean $flag true if background job, false if web application
+	 */
+	public function backgroundJob($flag=true) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_background_job($flag);
+	}
+
+	/**
+	 * If enabled, this enabled the capturing of URL parameters for displaying
+	 * in transaciton traces.  This overrides the newrelic.capture_params
+	 * setting.
+	 *
+	 * @param boolean $enable true if enabled, false if not.
+	 */
+	public function captureParams($enable=false) {
+		if ($this->skip()) {
+			return;
+		}
+		if ($enable) {
+			newrelic_capture_params('on');
+		} else {
+			newrelic_capture_params(false);
+		}
+	}
+
+	/**
+	 * Adds a cutom metric with specified name and value.
+	 * Note: Value to be stored is of type Double.
+	 *
+	 * @param string $metricName The name of the metric to store
+	 * @param double $value The value to store
+	 */
+	public function customMetric($metricName, $value) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_custom_metric($metricName, $value);
+	}
+
+	/**
+	 * Prevents output filter from attempting to insert RUM Javascript.
+	 */
+	public function disableAutorum() {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_disable_autorum();
+	}
+
+	/**
+	 * Stop recording the web transaction immediately.  Useful when page is done
+	 * computing and is about to stream data (file download, audio, video).
+	 */
+	public function endOfTransaction() {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_end_of_transaction();
+	}
+
+	/**
+	 * Despite being similar in name to newrelic_end_of_transaction above, this call
+	 * serves a very different purpose. newrelic_end_of_transaction simply marks the
+	 * end time of the transaction but takes no other action. The transaction is
+	 * still only sent to the daemon when the PHP engine determines that the script
+	 * is done executing and is shutting down. This function on the other hand,
+	 * causes the current transaction to end immediately, and will ship all of the
+	 * metrics gathered thus far to the daemon unless the ignore parameter is set to
+	 * true. In effect this call simulates what would happen when PHP terminates the
+	 * current transaction. This is most commonly used in command line scripts that
+	 * do some form of job queue processing. You would use this call at the end of
+	 * processing a single job task, and begin a new transaction (see below) when a
+	 * new task is pulled off the queue.
+	 *
+	 * @param boolean Normally, when you end a transaction you want the metrics that
+	 *                have been gathered thus far to be recorded. However, there are
+	 *                times when you may want to end a transaction without doing so.
+	 *                In this case use the second form of the function and set ignore
+	 *                to true.
+	 *
+	 * @since 3.0
+	 */
+	public function endTransaction($ignore=false) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_end_transaction($ignore);
+	}
+
+	/**
+	 * Returns the JavaScript to insert in your <head>.
+	 *
+	 * Default is to return the surrounding script tags.
+	 *
+	 * @param boolean $flag If true, also returns <script> tag, else no tag.
+	 * @return string JavaScript for the timing header, empty string if extension not loaded
+	 */
+	public function getBrowserTimingHeader($flag=true) {
+		if ($this->skip()) {
+			return '';
+		}
+		return newrelic_get_browser_timing_header($flag);
+	}
+
+	/**
+	 * Returns the JavaScript to insert directly before your closing </body>
+	 * tag.
+	 *
+	 * Default is to return the surrounding script tags.
+	 *
+	 * @param boolean $flag If true, also returns <script> tag, else no tag.
+	 * @return string JavaScript for the timing footer, empty string if extension not loaded
+	 */
+	public function getBrowserTimingFooter($flag=true) {
+		if ($this->skip()) {
+			return '';
+		}
+		return newrelic_get_browser_timing_footer($flag);
+	}
+
+	/**
+	 * Do not generate Apdex metrics for this transaction.  Useful if you have
+	 * a very short or very long transaction that can skew your apdex score.
+	 */
+	public function ignoreApdex() {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_ignore_apdex();
+	}
+
+	/**
+	 * Do not generate metrics for this transaction.  Useful if you have a
+	 * known particularly slow transaction that you do not want skewing your
+	 * metrics.
+	 */
+	public function ignoreTransaction() {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_ignore_transaction();
+	}
+
+	/**
+	 * Sets the name of the transaction to the specified string, useful if you
+	 * have your own dispatching scheme.
+	 *
+	 * Please see New Relic PHP API docs for more details.
+	 *
+	 * @param string $string Name of the transaction
+	 */
+	public function nameTransaction($string) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_name_transaction($string);
+	}
+
+	/**
+	 * Reports an error at this line of code, with complete stack trace.
+	 *
+	 * @param string $message The error message
+	 * @param string $exception The name of a valid PHP Exception class
+	 * @since 2.6 (with $exception parameter)
+	 */
+	public function noticeError($message, $exception=null) {
+		if ($this->skip()) {
+			return;
+		}
+		if ($exception === null) {
+			newrelic_notice_error($message);
+		} else {
+			newrelic_notice_error($message, $exception);
+		}
+	}
+
+	/**
+	 * Reports an error at this line of code, with complete stack trace.
+	 * This method contains additional parameters vs. YiiNewRelic::noticeError()
+	 *
+	 * @param string $errno The error code number
+	 * @param string $message The error message
+	 * @param string $funcname The name of the function
+	 * @param string $lineno The line number
+	 * @param string $errcontext The context of this error
+	 */
+	public function noticeErrorLong($errno, $message, $funcname, $lineno, $errcontext) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_notice_error($errno, $message, $funcname, $lineno, $errcontext);
+	}
+
+	/**
+	 * Records a <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/understanding-insights/new-relic-insights">New Relic Insights<a> custom event.
+	 * For more information, see <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/adding-querying-data/inserting-custom-events-new-relic-agents#php-att">Inserting custom events with the PHP agent.</a>
+	 * 
+	 * @param string $name The event name
+	 * @param array $attributes Associative array of the attributes
+	 * @since ?.?
+	 */
+	public function recordCustomEvent($name, $attributes) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_record_custom_event($name, $attributes);
+	}
+
+	/**
 	 * Sets the name of your application in New Relic.
 	 * Must be set before the footer has been sent, and is best if called as
 	 * early as possible.
@@ -219,247 +464,6 @@ class YiiNewRelic extends CApplicationComponent
 			return;
 		}
 		newrelic_start_transaction($appName, $license);
-	}
-
-	/**
-	 * Reports an error at this line of code, with complete stack trace.
-	 *
-	 * @param string $message The error message
-	 * @param string $exception The name of a valid PHP Exception class
-	 * @since 2.6 (with $exception parameter)
-	 */
-	public function noticeError($message, $exception=null) {
-		if ($this->skip()) {
-			return;
-		}
-		if ($exception === null) {
-			newrelic_notice_error($message);
-		} else {
-			newrelic_notice_error($message, $exception);
-		}
-	}
-
-	/**
-	 * Reports an error at this line of code, with complete stack trace.
-	 * This method contains additional parameters vs. YiiNewRelic::noticeError()
-	 *
-	 * @param string $errno The error code number
-	 * @param string $message The error message
-	 * @param string $funcname The name of the function
-	 * @param string $lineno The line number
-	 * @param string $errcontext The context of this error
-	 */
-	public function noticeErrorLong($errno, $message, $funcname, $lineno, $errcontext) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_notice_error($errno, $message, $funcname, $lineno, $errcontext);
-	}
-
-	/**
-	 * Records a <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/understanding-insights/new-relic-insights">New Relic Insights<a> custom event.
-	 * For more information, see <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/adding-querying-data/inserting-custom-events-new-relic-agents#php-att">Inserting custom events with the PHP agent.</a>
-	 * 
-	 * @param string $name The event name
-	 * @param array $attributes Associative array of the attributes
-	 * @since ?.?
-	 */
-	public function recordCustomEvent($name, $attributes) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_record_custom_event($name, $attributes);
-	}
-
-	/**
-	 * Sets the name of the transaction to the specified string, useful if you
-	 * have your own dispatching scheme.
-	 *
-	 * Please see New Relic PHP API docs for more details.
-	 *
-	 * @param string $string Name of the transaction
-	 */
-	public function nameTransaction($string) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_name_transaction($string);
-	}
-
-	/**
-	 * Stop recording the web transaction immediately.  Useful when page is done
-	 * computing and is about to stream data (file download, audio, video).
-	 */
-	public function endOfTransaction() {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_end_of_transaction();
-	}
-	
-	/**
-	 * Despite being similar in name to newrelic_end_of_transaction above, this call
-	 * serves a very different purpose. newrelic_end_of_transaction simply marks the
-	 * end time of the transaction but takes no other action. The transaction is
-	 * still only sent to the daemon when the PHP engine determines that the script
-	 * is done executing and is shutting down. This function on the other hand,
-	 * causes the current transaction to end immediately, and will ship all of the
-	 * metrics gathered thus far to the daemon unless the ignore parameter is set to
-	 * true. In effect this call simulates what would happen when PHP terminates the
-	 * current transaction. This is most commonly used in command line scripts that
-	 * do some form of job queue processing. You would use this call at the end of
-	 * processing a single job task, and begin a new transaction (see below) when a
-	 * new task is pulled off the queue.
-	 *
-	 * @param boolean Normally, when you end a transaction you want the metrics that
-	 *                have been gathered thus far to be recorded. However, there are
-	 *                times when you may want to end a transaction without doing so.
-	 *                In this case use the second form of the function and set ignore
-	 *                to true.
-	 *
-	 * @since 3.0
-	 */
-	public function endTransaction($ignore=false) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_end_transaction($ignore);
-	}	
-
-	/**
-	 * Do not generate metrics for this transaction.  Useful if you have a
-	 * known particularly slow transaction that you do not want skewing your
-	 * metrics.
-	 */
-	public function ignoreTransaction() {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_ignore_transaction();
-	}
-
-	/**
-	 * Do not generate Apdex metrics for this transaction.  Useful if you have
-	 * a very short or very long transaction that can skew your apdex score.
-	 */
-	public function ignoreApdex() {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_ignore_apdex();
-	}
-
-	/**
-	 * Whether to mark as a background job or web application.
-	 *
-	 * @param boolean $flag true if background job, false if web application
-	 */
-	public function backgroundJob($flag=true) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_background_job($flag);
-	}
-
-	/**
-	 * If enabled, this enabled the capturing of URL parameters for displaying
-	 * in transaciton traces.  This overrides the newrelic.capture_params
-	 * setting.
-	 *
-	 * @param boolean $enable true if enabled, false if not.
-	 */
-	public function captureParams($enable=false) {
-		if ($this->skip()) {
-			return;
-		}
-		if ($enable) {
-			newrelic_capture_params('on');
-		} else {
-			newrelic_capture_params(false);
-		}
-	}
-
-	/**
-	 * Adds a cutom metric with specified name and value.
-	 * Note: Value to be stored is of type Double.
-	 *
-	 * @param string $metricName The name of the metric to store
-	 * @param double $value The value to store
-	 */
-	public function customMetric($metricName, $value) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_custom_metric($metricName, $value);
-	}
-
-	/**
-	 * Adds a custom parameter to current web transaction, e.g. customer's full
-	 * name.
-	 *
-	 * @param string $key Name of custom parameter
-	 * @param string $value Value of custom parameter
-	 */
-	public function addCustomParameter($key, $value) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_add_custom_parameter($key, $value);
-	}
-
-	/**
-	 * Adds a user defined functions or methods to the list to be instrumented.
-	 *
-	 * Internal PHP functions cannot have custom tracing.
-	 *
-	 * @param string $name Either 'functionName', or 'ClassName::functionName'
-	 */
-	public function addCustomTracer($name) {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_add_custom_tracer($name);
-	}
-
-	/**
-	 * Returns the JavaScript to insert in your <head>.
-	 *
-	 * Default is to return the surrounding script tags.
-	 *
-	 * @param boolean $flag If true, also returns <script> tag, else no tag.
-	 * @return string JavaScript for the timing header, empty string if extension not loaded
-	 */
-	public function getBrowserTimingHeader($flag=true) {
-		if ($this->skip()) {
-			return '';
-		}
-		return newrelic_get_browser_timing_header($flag);
-	}
-
-	/**
-	 * Returns the JavaScript to insert directly before your closing </body>
-	 * tag.
-	 *
-	 * Default is to return the surrounding script tags.
-	 *
-	 * @param boolean $flag If true, also returns <script> tag, else no tag.
-	 * @return string JavaScript for the timing footer, empty string if extension not loaded
-	 */
-	public function getBrowserTimingFooter($flag=true) {
-		if ($this->skip()) {
-			return '';
-		}
-		return newrelic_get_browser_timing_footer($flag);
-	}
-
-	/**
-	 * Prevents output filter from attempting to insert RUM Javascript.
-	 */
-	public function disableAutorum() {
-		if ($this->skip()) {
-			return;
-		}
-		newrelic_disable_autorum();
 	}
 
 }

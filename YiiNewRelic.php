@@ -177,6 +177,51 @@ class YiiNewRelic extends CApplicationComponent
 	}
 
 	/**
+	 * As of release 4.4, calling newrelic_set_user_attributes("a", "b", "c");
+	 * is equivalent to calling:
+	 * 
+	 * newrelic_add_custom_parameter("user", "a");
+	 * newrelic_add_custom_parameter("account", "b");
+	 * newrelic_add_custom_parameter("product", "c");
+	 * 
+	 * Previously, the three parameter strings were added to collected browser
+	 * traces. All three parameters are required, but may be empty strings.
+	 *
+	 * @param string $user
+	 * @param string $account
+	 * @param string $product
+	 * @since 4.4
+	 */
+	public function setUserAttributes($user, $account, $product) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_set_user_attributes($user, $account, $product);
+	}
+
+	/**
+	 * If you have ended a transaction before your script terminates (perhaps
+	 * due to it just having finished a task in a job queue manager) and you
+	 * want to start a new transaction, use this call. This will perform the
+	 * same operations that occur when the script was first started. Of the
+	 * two arguments, only the application name is mandatory. However, if you
+	 * are processing tasks for multiple accounts, you may also provide a
+	 * license for the associated account. The license set for this API call
+	 * will supersede all per-directory and global default licenses configured
+	 * in INI files
+	 * 
+	 * @param string $appName The application name
+	 * @param string $license The application license, optional
+	 * @since 3.0
+	 */
+	public function startTransaction($appName, $license=null) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_start_transaction($appName, $license);
+	}
+
+	/**
 	 * Reports an error at this line of code, with complete stack trace.
 	 *
 	 * @param string $message The error message
@@ -212,6 +257,21 @@ class YiiNewRelic extends CApplicationComponent
 	}
 
 	/**
+	 * Records a <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/understanding-insights/new-relic-insights">New Relic Insights<a> custom event.
+	 * For more information, see <a href="https://docs.newrelic.com/docs/insights/new-relic-insights/adding-querying-data/inserting-custom-events-new-relic-agents#php-att">Inserting custom events with the PHP agent.</a>
+	 * 
+	 * @param string $name The event name
+	 * @param array $attributes Associative array of the attributes
+	 * @since ?.?
+	 */
+	public function recordCustomEvent($name, $attributes) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_record_custom_event($name, $attributes);
+	}
+
+	/**
 	 * Sets the name of the transaction to the specified string, useful if you
 	 * have your own dispatching scheme.
 	 *
@@ -236,6 +296,35 @@ class YiiNewRelic extends CApplicationComponent
 		}
 		newrelic_end_of_transaction();
 	}
+	
+	/**
+	 * Despite being similar in name to newrelic_end_of_transaction above, this call
+	 * serves a very different purpose. newrelic_end_of_transaction simply marks the
+	 * end time of the transaction but takes no other action. The transaction is
+	 * still only sent to the daemon when the PHP engine determines that the script
+	 * is done executing and is shutting down. This function on the other hand,
+	 * causes the current transaction to end immediately, and will ship all of the
+	 * metrics gathered thus far to the daemon unless the ignore parameter is set to
+	 * true. In effect this call simulates what would happen when PHP terminates the
+	 * current transaction. This is most commonly used in command line scripts that
+	 * do some form of job queue processing. You would use this call at the end of
+	 * processing a single job task, and begin a new transaction (see below) when a
+	 * new task is pulled off the queue.
+	 *
+	 * @param boolean Normally, when you end a transaction you want the metrics that
+	 *                have been gathered thus far to be recorded. However, there are
+	 *                times when you may want to end a transaction without doing so.
+	 *                In this case use the second form of the function and set ignore
+	 *                to true.
+	 *
+	 * @since 3.0
+	 */
+	public function endTransaction($ignore=false) {
+		if ($this->skip()) {
+			return;
+		}
+		newrelic_end_transaction($ignore);
+	}	
 
 	/**
 	 * Do not generate metrics for this transaction.  Useful if you have a

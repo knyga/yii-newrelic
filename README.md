@@ -44,7 +44,13 @@ yii-newrelic is a wrapper around the New Relic PHP API.  Automatic tracking of m
     php composer.phar install
     ```
 
-3) In main.php, add the following to 'components':
+3) In main.php add line to define vendor path:
+
+```
+Yii::setPathOfAlias('vendor', dirname(__FILE__) . '/../../../vendor');
+```
+
+And add the following to 'components':
 ```
         'newRelic' => [
             'class' => 'vendor.knyga.yii-newrelic.YiiNewRelic',

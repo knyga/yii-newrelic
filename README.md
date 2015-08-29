@@ -107,7 +107,7 @@ Or add line to import block in your main.php:
 9) In console.php, add the following to 'components':
 ```
 	'newRelic' => [
-		'class' => 'ext.yii-newrelic.YiiNewRelic',
+		'class' => 'vendor.knyga.yii-newrelic.YiiNewRelic',
 	],
 ```
 
@@ -115,7 +115,7 @@ Or add line to import block in your main.php:
 ```
 	'behaviors' => [
 		'newRelic' => [
-			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
+			 'class' => 'vendor.knyga.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
 		],
 	],
 ```

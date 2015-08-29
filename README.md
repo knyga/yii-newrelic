@@ -55,7 +55,7 @@ And add the following to 'components':
         'newRelic' => [
             'class' => 'vendor.knyga.yii-newrelic.YiiNewRelic',
         ],
-        'clientScript' => array(
+        'clientScript' => [
             'class' => 'vendor.knyga.yii-newrelic.YiiNewRelicClientScript',
         ],
 ```
@@ -106,18 +106,18 @@ Or add line to import block in your main.php:
 
 9) In console.php, add the following to 'components':
 ```
-	'newRelic' => array(
+	'newRelic' => [
 		'class' => 'ext.yii-newrelic.YiiNewRelic',
-	),
+	],
 ```
 
 10) In console.php, add the following to the top-level array:
 ```
-	'behaviors' => array(
-		'newRelic' => array(
+	'behaviors' => [
+		'newRelic' => [
 			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicConsoleAppBehavior',
-		),
-	),
+		],
+	],
 ```
 
 ###Features

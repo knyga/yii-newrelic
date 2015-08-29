@@ -34,7 +34,7 @@ yii-newrelic is a wrapper around the New Relic PHP API.  Automatic tracking of m
     ```json
     {
       "require": {
-        "knyga/yii-newrelic": "*"
+        "knyga/yii-newrelic": "dev-master"
       }
     }
     ```

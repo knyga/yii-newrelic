@@ -78,11 +78,11 @@ Or add line to import block in your main.php:
 
 5) In main.php, add the following to the top-level array:
 ```
-	'behaviors' => array(
-		'newRelic' => array(
-			 'class' => 'ext.yii-newrelic.behaviors.YiiNewRelicWebAppBehavior',
-		),
-	),
+    'behaviors' => [
+        'newRelic' => [
+            'class' => 'vendor.knyga.yii-newrelic.behaviors.YiiNewRelicWebAppBehavior',
+        ]
+    ],
 ```
 
 6) Create subclass of <code>CWebApplication</code>, e.g. <code>NewRelicApplication</code>.

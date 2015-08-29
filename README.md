@@ -46,12 +46,12 @@ yii-newrelic is a wrapper around the New Relic PHP API.  Automatic tracking of m
 
 3) In main.php, add the following to 'components':
 ```
-	'newRelic' => array(
-		'class' => 'ext.yii-newrelic.YiiNewRelic',
-	),
-	'clientScript' => array(
-		'class' => 'ext.yii-newrelic.YiiNewRelicClientScript',
-	),
+        'newRelic' => [
+            'class' => 'vendor.knyga.yii-newrelic.YiiNewRelic',
+        ],
+        'clientScript' => array(
+            'class' => 'vendor.knyga.yii-newrelic.YiiNewRelicClientScript',
+        ],
 ```
 
 4) If you are using a script that subclasses <code>CClientScript</code>, instead of adding

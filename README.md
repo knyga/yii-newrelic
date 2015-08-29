@@ -23,7 +23,26 @@ yii-newrelic is a wrapper around the New Relic PHP API.  Automatic tracking of m
 
 1) Install the New Relic PHP driver on your web server per [New Relic For PHP](https://newrelic.com/docs/php/new-relic-for-php) instructions.
 
-2) Place this extension in /protected/extensions/yii-newrelic/.
+2) Install package via composer
+
+ * Install Composer to your project root:
+    ```bash
+    curl -sS https://getcomposer.org/installer | php
+    ```
+    
+ * Add a `composer.json` file to your project:
+    ```json
+    {
+      "require": {
+        "knyga/yii-newrelic": "*"
+      }
+    }
+    ```
+
+ * Run the Composer installer:
+    ```bash
+    php composer.phar install
+    ```
 
 3) In main.php, add the following to 'components':
 ```

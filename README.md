@@ -60,7 +60,14 @@ extension's script and extend it from <code>YiiNewRelicClientScript</code> inste
 change <code>extends CClientScript</code> to <code>extends YiiNewRelicClientScript</code>, and then
 add a line before that class declaration that says:
 ```
-	Yii::import('ext.yii-newrelic.YiiNewRelicClientScript');
+	Yii::import('vendor.knyga.yii-newrelic.YiiNewRelicClientScript');
+```
+
+Or add line to import block in your main.php:
+```
+    'import' => [
+        'vendor.knyga.yii-newrelic.YiiNewRelicClientScript'
+    ]
 ```
 
 5) In main.php, add the following to the top-level array:
